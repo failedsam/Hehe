@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoBoard - Frutiger Aero Core</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;700&display=swap');
+        
+        :root {
+            --primary-blue: rgba(0, 85, 170, 0.9);
+            --secondary-blue: rgba(16, 65, 132, 0.8);
+            --primary-green: rgba(55, 126, 34, 0.85);
+            --secondary-green: rgba(36, 93, 21, 0.75);
+            --highlight: rgba(255, 255, 255, 0.8);
+            --shadow: rgba(0, 0, 0, 0.3);
+            --text: #003366;
+            --background: #ece9d8;
+            --post-bg: rgba(255, 255, 255, 0.85);
+            --post-alt: rgba(225, 238, 210, 0.9);
+            --border: rgba(122, 150, 190, 0.8);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            background-image: url('https://i.imgur.com/5Nzrw9p.jpg'); /* Windows XP bliss hill image to be replaced */
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(to bottom, var(--primary-blue), var(--secondary-blue));
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 3px 3px 8px var(--shadow), inset 0 0 30px rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--highlight);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: white;
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            animation: shine 8s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .board-btn {
+            background: linear-gradient(to bottom, var(--highlight), rgba(226, 239, 255, 0.7));
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 3px var(--shadow);
+            text-decoration: none;
+            margin: 2px;
+        }
+        
+        .board-btn:hover {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(226, 239, 255, 0.85));
+            box-shadow: 2px 2px 5px var(--shadow);
+            border: 1px solid var(--primary-blue);
+        }
+        
+        .board-header {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(220, 230, 250, 0.6));
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px var(--shadow);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .board-title {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--primary-blue);
+        }
+        
+        .post-form-btn {
+            background: linear-gradient(to bottom, var(--primary-green), var(--secondary-green));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 2px 2px 3px var(--shadow);
+            font-weight: bold;
+        }
+        
+        .thread {
+            background: var(--post-bg);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+        
+        .post {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .post-name {
+            color: #1d4c8f;
+            font-weight: bold;
+        }
+        
+        .post-id {
+            color: #666;
+        }
+        
+        .post-time {
+            color: #777;
+        }
+        
+        .post-content {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .post-image {
+            width: 150px;
+            height: 150px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px var(--shadow);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .post-text {
+            flex-grow: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .reply {
+            background-color: var(--post-alt);
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .post-action {
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+        
+        .post-action:hover {
+            text-decoration: underline;
+        }
+        
+        .post-form {
+            background: var(--post-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px var(--shadow);
+            border: 1px solid var(--border);
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .file-input-btn {
+            background: linear-gradient(to bottom, rgba(220, 230, 250, 0.8), rgba(200, 215, 240, 0.6));
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to bottom, var(--primary-green), var(--secondary-green));
+            color: white;
+            border: 1px solid var(--secondary-green);
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            box-shadow: 2px 2px 3px var(--shadow);
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #6684a3;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+        
+        .page-btn {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(220, 230, 250, 0.6));
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+        
+        .page-btn:hover {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 245, 255, 0.8));
+        }
+        
+        .page-btn.active {
+            background: linear-gradient(to bottom, var(--primary-blue), var(--secondary-blue));
+            color: white;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .post-content {
+                flex-direction: column;
+            }
+            
+            .post-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="shine"></div>
+            <h1>CatBoard XP</h1>
+        </header>
+        
+        <nav>
+            <a href="#" class="board-btn">/c/ - Cats</a>
+            <a href="#" class="board-btn">/k/ - Kittens</a>
+            <a href="#" class="board-btn">/cb/ - Cat Breeds</a>
+            <a href="#" class="board-btn">/cp/ - Cat Pictures</a>
+            <a href="#" class="board-btn">/cm/ - Cat Memes</a>
+            <a href="#" class="board-btn">/cg/ - Cat Gifs</a>
+            <a href="#" class="board-btn">/cc/ - Cute Cats</a>
+            <a href="#" class="board-btn">/ca/ - Cat Art</a>
+            <a href="#" class="board-btn">/ct/ - Cat Toys</a>
+            <a href="#" class="board-btn">/cr/ - Cat Rescue</a>
+        </nav>
+        
+        <div class="board-header">
+            <h2 class="board-title">/c/ - Cats</h2>
+            <button class="post-form-btn" onclick="togglePostForm()">Create Cat Thread</button>
+        </div>
+        
+        <div class="post-form" id="postForm">
+            <div class="form-group">
+                <label for="name">Name (optional)</label>
+                <input type="text" id="name" placeholder="Anonymous">
+            </div>
+            
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" placeholder="Enter subject">
+            </div>
+            
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea id="comment" placeholder="Enter your comment"></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <div class="file-input-wrapper">
+                    <button class="file-input-btn">Upload Image</button>
+                    <input type="file" accept="image/*">
+                </div>
+                
+                <button class="submit-btn">Post</button>
+            </div>
+        </div>
+        
+        <div class="thread">
+            <div class="post">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069180</span>
+                        <span class="post-time">04/13/25(Sun)14:22:05</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat1">
+                    </div>
+                    <div class="post-text">
+                        <p>Rate my new tabby cat, just got him from the shelter yesterday. He's already claimed my keyboard as his new bed.</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+            
+            <div class="post reply">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069181</span>
+                        <span class="post-time">04/13/25(Sun)14:25:18</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-text">
+                        <p>10/10 good orange boy. Tabbies are the best! Get ready for your keyboard to be permanently occupied.</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+            
+            <div class="post reply">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069182</span>
+                        <span class="post-time">04/13/25(Sun)14:30:42</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat2">
+                    </div>
+                    <div class="post-text">
+                        <p>Cute! Is he a classic tabby or mackerel pattern? Here's my tabby for comparison. Mine loves to sleep on my laptop when it's warm.</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+            
+            <div class="post reply">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069183</span>
+                        <span class="post-time">04/13/25(Sun)14:33:17</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-text">
+                        <p>Make sure you get him a proper cat bed or he'll claim everything you own</p>
+                        <p>>but he'll still ignore the cat bed anyway</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="thread">
+            <div class="post">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069178</span>
+                        <span class="post-time">04/13/25(Sun)14:10:55</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat3">
+                    </div>
+                    <div class="post-text">
+                        <p>Toe beans appreciation thread. Post your cat's paws.</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+            
+            <div class="post reply">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069179</span>
+                        <span class="post-time">04/13/25(Sun)14:15:30</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat4">
+                    </div>
+                    <div class="post-text">
+                        <p>Pink beans on my black cat. She lets me touch them for exactly 2.5 seconds before attacking.</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="thread">
+            <div class="post">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069170</span>
+                        <span class="post-time">04/13/25(Sun)13:45:21</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat5">
+                    </div>
+                    <div class="post-text">
+                        <p>My cat keeps knocking things off my desk and then looking at me like I'm the one who did it. How do I stop this behavior?</p>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <span class="post-action">Reply</span>
+                    <span class="post-action">Report</span>
+                </div>
+            </div>
+            
+            <div class="post reply">
+                <div class="post-header">
+                    <span class="post-name">Anonymous</span>
+                    <div>
+                        <span class="post-id">No.42069171</span>
+                        <span class="post-time">04/13/25(Sun)13:50:12</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="/api/placeholder/150/150" alt="placeholder" id="cat6">
+                    </div>
+                    <div class="post-text">
+                        <p>You don't. This is your life now. Accept it.</p>
